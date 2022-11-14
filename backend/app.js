@@ -21,7 +21,7 @@ app.use(express.static(path.join(__dirname, '/../frontend/build')))
 //Creating routes
 app.get('/getItem', async (req, res) => {
   try {
-    // noinspection SqlResolve
+
     const item = await client.query(
         "SELECT name, price, date_purchased, store FROM GROCERIES WHERE name = $1 ", ["Bananas"]
     );
