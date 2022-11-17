@@ -3,6 +3,8 @@ import express from 'express'
 import path from 'path'
 import client from './dao/pgClient.js'
 import {fileURLToPath} from 'url';
+import authentication from "./routes/authentication.js";
+import groceries from "./routes/groceries.js";
 
 //Setting up env variables
 dotenv.config({path:"./.env"})
@@ -13,24 +15,16 @@ const __dirname = path.dirname(__filename);
 
 // Create the server
 const app = express()
+app.use(express.json())
 await client.connect()
+
 
 // Serve static files from the React frontend app
 app.use(express.static(path.join(__dirname, '/../frontend/build')))
 
 //Creating routes
-app.get('/getItem', async (req, res) => {
-  try {
-
-    const item = await client.query(
-        "SELECT name, price, date_purchased, store FROM GROCERIES WHERE name = $1 ", ["Bananas"]
-    );
-    res.json(item.rows[0])
-  } catch (err) {
-    console.log(err.message)
-    res.status(500).send("Server error")
-  }
-} )
+app.use('/groceries', groceries)
+app.use('/authentication', authentication)
 
 // AFTER defining routes: Anything that doesn't match what's above, send back index.html; (the beginning slash ('/') in the string is important!)
 app.get('*', (req, res) => {
