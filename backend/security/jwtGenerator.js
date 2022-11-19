@@ -9,8 +9,7 @@ const jwtGenerator = (user_id) => {
             id: user_id
         }
     }
-
-    console.log(process.env.jwtSecret)
+    
     return jwt.sign(payload, process.env.ACCESS_TOKEN_SECRET, { expiresIn: "1h" });
 
 }

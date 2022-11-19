@@ -1,10 +1,11 @@
 import React from 'react';
 import AppBar from "../Components/AppBar";
+import LoginInput from "../Components/Login/LoginInput";
 
-const Login = () =>  {
+const Test = () =>  {
     return (
-        <AppBar/>
+        <LoginInput/>
     );
 }
 
-export default Login
+export default Test
