@@ -5,6 +5,8 @@ import client from './dao/pgClient.js'
 import {fileURLToPath} from 'url';
 import authentication from "./routes/authentication.js";
 import groceries from "./routes/groceries.js";
+import cors from "cors";
+
 
 //Setting up env variables
 dotenv.config({path:"./.env"})
@@ -16,6 +18,8 @@ const __dirname = path.dirname(__filename);
 // Create the server
 const app = express()
 app.use(express.json())
+app.use(cors())
+
 await client.connect()
 
 
