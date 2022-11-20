@@ -1,10 +1,11 @@
 import React from 'react';
-import AppBar from "../Components/AppBar";
+import AppBar from "../Components/AppBar/AppBar";
 import LoginInput from "../Components/Login/LoginInput";
+import SearchBar from "../Components/SearchBar/SearchBar";
 
 const Test = () =>  {
     return (
-        <LoginInput/>
+        <SearchBar searchItemCallback={()=> console.log('hello')}/>
     );
 }
 
