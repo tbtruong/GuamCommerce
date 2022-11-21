@@ -2,12 +2,8 @@ import { TextField } from '@mui/material';
 import * as React from 'react';
 import axios from 'axios';
 import { EventAvailableOutlined } from '@mui/icons-material';
+import {searchItemResults} from "../../Routes/Groceries";
 
-export interface searchItemResults {
-    name: string;
-    description: string;
-    image: string;
-}
 
 interface SearchComponentProps {
     searchItemCallback: (list: searchItemResults[]) => void
@@ -28,8 +24,11 @@ const SearchComponent = ({ searchItemCallback }: SearchComponentProps) => {
             if (searchValue != '') {
 
                 // Send Axios request here
-                axios.get("/api/item", { params: { answer: searchValue } }).then(resp => {
+                axios.get("/groceries/getItem", { params: { answer: searchValue }, headers: {
+                        jwt_token: localStorage.token
+                    }}).then(resp => {
                     console.log('axios call')
+                    console.log(resp.data)
                     searchItemCallback(resp.data)
                 });
 

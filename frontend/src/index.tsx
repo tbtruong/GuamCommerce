@@ -12,6 +12,7 @@ import {
 } from "react-router-dom";
 import Test from "./Routes/Test";
 import {theme} from "./theme";
+import Groceries from "./Routes/Groceries";
 
 
 const root = ReactDOM.createRoot(
@@ -32,6 +33,10 @@ root.render(
                         <RouteGuard redirectTo={"/login"}>
                             <Test/>
                         </RouteGuard>} />
+                        <Route path="/groceries" element={
+                            <RouteGuard redirectTo={"/login"}>
+                                <Groceries/>
+                            </RouteGuard>} />
                     </Routes>
                 </BrowserRouter>
             </ThemeProvider>
