@@ -2,6 +2,7 @@ import React from 'react';
 import Drawer from "../Components/Drawer/Drawer";
 import {Box, CssBaseline, Grid, Typography} from "@mui/material";
 import SearchBar from "../Components/SearchBar/SearchBar";
+import ReactCSSTransitionGroup from 'react-transition-group';
 
 const Dashboard = () => {
   return (
