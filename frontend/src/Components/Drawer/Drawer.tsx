@@ -2,7 +2,6 @@ import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import {Box, Button, Divider, Typography, Icon} from "@mui/material";
 import {NavItem} from "./NavItem";
-import {Link} from "react-router-dom";
 import {ShoppingCart} from '@mui/icons-material/';
 
 const AppDrawer = () => {
@@ -14,14 +13,14 @@ const AppDrawer = () => {
             title: 'Dashboard'
         },
         {
-            href: '/customers',
+            href: '/groceries',
             icon: (<ShoppingCart fontSize="small" />),
-            title: 'Customers'
+            title: 'Groceries'
         },
         {
-            href: '/products',
+            href: '/flights',
             icon: (<ShoppingCart fontSize="small" />),
-            title: 'Products'
+            title: 'Flights'
         },
     ];
 
