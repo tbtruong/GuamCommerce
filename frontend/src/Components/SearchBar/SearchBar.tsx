@@ -10,7 +10,6 @@ interface SearchComponentProps {
 }
 
 const searchStyle = {
-    margin: "1rem",
     width: "50%"
 }
 
@@ -27,8 +26,6 @@ const SearchComponent = ({ searchItemCallback }: SearchComponentProps) => {
                 axios.get("/groceries/getItem", { params: { answer: searchValue }, headers: {
                         jwt_token: localStorage.token
                     }}).then(resp => {
-                    console.log('axios call')
-                    console.log(resp.data)
                     searchItemCallback(resp.data)
                 });
 

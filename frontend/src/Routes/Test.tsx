@@ -1,12 +1,15 @@
-import React from 'react';
-import AppBar from "../Components/AppBar/AppBar";
-import LoginInput from "../Components/Login/LoginInput";
-import SearchBar from "../Components/SearchBar/SearchBar";
+import React, {useEffect} from 'react';
+import {Box} from "@mui/material";
 
-const Test = () =>  {
+
+
+const Test = () => {
+
+
     return (
-        <SearchBar searchItemCallback={()=> console.log('hello')}/>
+        <Box>
+        </Box>
     );
 }
 
-export default Test
+export default Test;

@@ -2,28 +2,27 @@ import React from 'react';
 import Drawer from '@mui/material/Drawer';
 import {Box, Button, Divider, Typography, Icon} from "@mui/material";
 import {NavItem} from "./NavItem";
-import {ShoppingCart} from '@mui/icons-material/';
+import {ShoppingCart, Dashboard, ConnectingAirports} from '@mui/icons-material/';
 
 const AppDrawer = () => {
 
     const items = [
         {
             href: '/',
-            icon: (<ShoppingCart fontSize="small" />),
+            icon: (<Dashboard fontSize="medium" />),
             title: 'Dashboard'
         },
         {
             href: '/groceries',
-            icon: (<ShoppingCart fontSize="small" />),
+            icon: (<ShoppingCart fontSize="medium" />),
             title: 'Groceries'
         },
         {
             href: '/flights',
-            icon: (<ShoppingCart fontSize="small" />),
+            icon: (<ConnectingAirports fontSize="medium" />),
             title: 'Flights'
         },
     ];
-
 
 
     const content = (
@@ -54,6 +53,7 @@ const AppDrawer = () => {
                                 <Typography
                                     color="#FFFFFF"
                                     variant="subtitle1"
+                                    sx ={{userSelect: 'none'}}
                                 >
                                     Welcome Tung
                                 </Typography>
