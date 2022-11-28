@@ -18,9 +18,8 @@ const LineChart = ({groceryPriceList}: lineChartProps) => {
 
 
     groceryPriceList.map((item) => {
-        console.log(typeof(new Date(item.date_purchased)))
-        const month = new Date(item.date_purchased).getMonth()
-        const day = new Date(item.date_purchased).getDay()
+        const month = new Date(item.date_purchased).getMonth() + 1
+        const day = new Date(item.date_purchased).getDate()
         xAxis.push(`${month}/${day}`)
         yAxis.push(item.price)
     })
@@ -34,6 +33,11 @@ const LineChart = ({groceryPriceList}: lineChartProps) => {
                 backgroundColor: "rgb(0,0,0)",
                 borderColor: "rgb(15, 82, 186)",
                 data: yAxis,
+                pointRadius: 10,
+                pointBackgroundColor: function(context: { dataIndex: any; }) {
+                    const index = context?.dataIndex;
+                    return groceryPriceList[index].sale ? 'red' :  'black'
+                }
             },
         ],
     };
@@ -44,7 +48,8 @@ const LineChart = ({groceryPriceList}: lineChartProps) => {
     return (
         <Box sx={{width: '1000px', height:'500px'}}>
             <Line data={data}
-                  options={{ maintainAspectRatio: false, plugins: {
+                  options={{ maintainAspectRatio: false,
+                      plugins: {
                       legend: {
                           display: false
                       }},
@@ -74,7 +79,8 @@ const LineChart = ({groceryPriceList}: lineChartProps) => {
                                   }
                               }
                           }
-                      }}}
+                      }
+            }}
             />
         </Box>
     );

@@ -1,25 +1,25 @@
 import React from 'react';
 import Drawer from '@mui/material/Drawer';
-import {Box, Button, Divider, Typography, Icon} from "@mui/material";
+import {Box, Divider, Icon, Typography} from "@mui/material";
 import {NavItem} from "./NavItem";
-import {ShoppingCart, Dashboard, ConnectingAirports} from '@mui/icons-material/';
+import {ConnectingAirports, Dashboard, ShoppingCart} from '@mui/icons-material/';
 
 const AppDrawer = () => {
 
     const items = [
         {
             href: '/',
-            icon: (<Dashboard fontSize="medium" />),
+            icon: (<Dashboard fontSize="medium"/>),
             title: 'Dashboard'
         },
         {
             href: '/groceries',
-            icon: (<ShoppingCart fontSize="medium" />),
+            icon: (<ShoppingCart fontSize="medium"/>),
             title: 'Groceries'
         },
         {
             href: '/flights',
-            icon: (<ConnectingAirports fontSize="medium" />),
+            icon: (<ConnectingAirports fontSize="medium"/>),
             title: 'Flights'
         },
     ];
@@ -36,7 +36,7 @@ const AppDrawer = () => {
                 }}
             >
                 <div>
-                    <Box sx={{ px: 2 }}>
+                    <Box sx={{px: 2}}>
                         <Box
                             sx={{
                                 alignItems: 'center',
@@ -53,7 +53,7 @@ const AppDrawer = () => {
                                 <Typography
                                     color="#FFFFFF"
                                     variant="subtitle1"
-                                    sx ={{userSelect: 'none'}}
+                                    sx={{userSelect: 'none'}}
                                 >
                                     Welcome Tung
                                 </Typography>
@@ -80,7 +80,7 @@ const AppDrawer = () => {
                         my: 3
                     }}
                 />
-                <Box sx={{ flexGrow: 1 }}>
+                <Box sx={{flexGrow: 1}}>
                     {items.map((item) => (
                         <NavItem
                             key={item.title}
@@ -90,11 +90,10 @@ const AppDrawer = () => {
                         />
                     ))}
                 </Box>
-                <Divider sx={{ borderColor: '#2D3748' }} />
+                <Divider sx={{borderColor: '#2D3748'}}/>
             </Box>
         </>
     );
-
 
 
     return (
@@ -107,7 +106,7 @@ const AppDrawer = () => {
                     width: 280
                 }
             }}
-            sx={{ zIndex: (theme) => theme.zIndex.appBar + 100 }}
+            sx={{zIndex: (theme) => theme.zIndex.appBar + 100}}
             variant="permanent"
         >
             {content}
