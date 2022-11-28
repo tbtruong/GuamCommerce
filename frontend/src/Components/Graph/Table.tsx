@@ -102,13 +102,10 @@ const CustomTable = ({groceryPriceList}: lineChartProps) => {
                     {headerGroups.map((headerGroup: { getHeaderGroupProps: () => JSX.IntrinsicAttributes & { component: React.ElementType<any>; } & { children?: React.ReactNode; classes?: Partial<TableRowClasses> | undefined; hover?: boolean | undefined; selected?: boolean | undefined; sx?: SxProps<Theme> | undefined; } & CommonProps & Omit<any, "children" | keyof CommonProps | "hover" | "selected" | "sx">; headers: any[]; }) => (
                         <StyledTableRow {...headerGroup.getHeaderGroupProps()}>
                             {headerGroup.headers.map(column => {
-                                return (!column.hideHeader)? null : (
-                                    <StyledTableCell {...column.getHeaderProps()} sx={{
-                                        backgroundColor: '#202E4B',
-                                        color: theme.palette.common.white
-                                    }}>
+                                return column.hideHeader === false ? null : (
+                                    <StyledTableCell {...column.getHeaderProps()} sx={{backgroundColor: '#202E4B', color: theme.palette.common.white}}>
                                         <Typography>
-                                            {column.render('Header')}
+                                        {column.render('Header')}
                                         </Typography>
                                     </StyledTableCell>
                                 )

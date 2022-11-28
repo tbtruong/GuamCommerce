@@ -7,15 +7,26 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
-import {Box, Checkbox, FormControlLabel, IconButton, InputAdornment, List, ListItem, ListItemText} from "@mui/material";
+import {
+    Autocomplete,
+    Box,
+    Checkbox,
+    FormControlLabel,
+    IconButton,
+    InputAdornment,
+    List,
+    ListItem,
+    ListItemText
+} from "@mui/material";
 import axios from "../../Util/Axios";
 import {AxiosError} from "axios";
+import {searchItemResults} from "../../Routes/Groceries";
+import {styled} from "@mui/material/styles";
 
 const dialogLeft = {
     display: 'flex',
     flexDirection: 'column',
-    width: '25%',
-    rowGap: 'px'
+    width: '30%'
 }
 
 const dialogRight = {
@@ -38,17 +49,58 @@ interface groceryProduct {
 
 }
 
+const StyledTextField = styled(TextField)`
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    display: none;
+  }
+  input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+`;
+
 const FormDialog = () => {
     const [open, setOpen] = React.useState(false);
 
-    const [groceryName, setGroceryName] = React.useState('')
+    const [groceryNameValue, setGroceryNameValue] = React.useState<string | null>(null);
+    const [groceryNameInputValue, setGroceryNameInputValue] = React.useState('');
+    const [groceryNameOptions, setGroceryNameOptions] = React.useState<string[]>([])
+
+    const [groceryStoreValue, setGroceryStoreValue] = React.useState<string | null>(null);
+    const [groceryStoreInputValue, setGroceryStoreInputValue] = React.useState('');
+    const [groceryStoreOptions, setGroceryStoreOptions] = React.useState<string[]>([])
+
     const [groceryPrice, setGroceryPrice] = React.useState('')
     const [groceryDate, setGroceryDate] = React.useState('')
-    const [groceryStore, setGroceryStore] = React.useState('')
     const [sale, setSale] = React.useState(false)
 
     const [groceries, setGroceries] = React.useState<groceryProduct[]>([])
 
+    React.useEffect( () => {
+        const tempNameArray: string[] = []
+        const tempStoreArray: string[] = []
+        setTimeout(() => {
+            axios.get('/groceries/uniqueName', {
+                headers: {
+                    jwt_token: localStorage.token
+                }}).then((resp) => {
+                resp.data.map((item: searchItemResults) => {
+                    tempNameArray.push(item.name)
+                })
+                setGroceryNameOptions(tempNameArray)
+            })
+
+            axios.get('/groceries/uniqueStore', {
+                headers: {
+                    jwt_token: localStorage.token
+                }}).then((resp) => {
+                resp.data.map((item: searchItemResults) => {
+                    tempStoreArray.push(item.store)
+                })
+                setGroceryStoreOptions(tempStoreArray)
+            })
+        }, 1000)
+    }, [])
 
     const handleClickOpen = () => {
         setOpen(true);
@@ -67,7 +119,11 @@ const FormDialog = () => {
         const data = {groceryList: groceries}
 
         try {
-            await axios.post("/groceries/postGroceryList", data).then((parseRes) => {
+            console.log(groceries)
+            await axios.post("/groceries/postGroceryList", data, {
+                 headers: {
+                    jwt_token: localStorage.token
+                }}).then((parseRes) => {
                 // if (parseRes.data.jwtToken) {
                 //     localStorage.setItem("token", parseRes.data.jwtToken);
                 // }
@@ -95,8 +151,10 @@ const FormDialog = () => {
     }
 
     const clearFields = () => {
-        setGroceryName('')
-        setGroceryStore('')
+        setGroceryNameInputValue('')
+        setGroceryNameValue('')
+        setGroceryStoreInputValue('')
+        setGroceryStoreValue('')
         setGroceryPrice('')
         setGroceryDate('')
         setSale(false)
@@ -104,17 +162,17 @@ const FormDialog = () => {
 
     const handleAddItem = () => {
         const currentGroceryItem = {
-            groceryName: groceryName,
+            groceryName: groceryNameInputValue,
             groceryPrice: groceryPrice,
             groceryDate: groceryDate,
-            groceryStore: groceryStore,
+            groceryStore: groceryStoreInputValue,
             sale: sale
         }
         setGroceries(prevState => [...prevState, currentGroceryItem])
         clearFields()
     }
 
-
+    // @ts-ignore
     return (
         <Box>
             <Button variant="outlined" onClick={handleClickOpen}>
@@ -123,23 +181,21 @@ const FormDialog = () => {
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle sx={{backgroundColor: '#202E4B', color: 'white'}}>Record Your Grocery
                     Expenditures</DialogTitle>
-                <Box sx={{display: 'flex', flexDirection: 'row'}}>
+                <Box sx={{display: 'flex', flexDirection: 'row', width: '600px !important'}}>
                     <DialogContent sx={dialogLeft}>
                         <Box>
-                            <TextField
-                                margin="dense"
-                                id="groceryName"
-                                label="Grocery Item's Name"
-                                variant="standard"
-                                value={groceryName}
-                                InputLabelProps={{shrink: true}}
-                                onChange={(event) => {
-                                    setGroceryName(event.target.value)
-                                }}
-                            />
+                            <Autocomplete value={groceryNameValue}
+                                          freeSolo
+                                          onChange={(event: any, newValue: string | null) => {return setGroceryNameValue(newValue)}}
+                                          onInputChange={(event, newInputValue) => {
+                                              setGroceryNameInputValue(newInputValue);
+                                          }}
+                                          options={groceryNameOptions}
+                                          inputValue={groceryNameInputValue}
+                                          renderInput={(params) => <StyledTextField type={'search'} variant={'standard'} label={'Grocery Name'} {...params} InputLabelProps={{...params.InputLabelProps, shrink: true}} />}/>
                             <TextField
                                 autoFocus
-                                label="Grocery Item's Price"
+                                label="Grocery Price"
                                 variant="standard"
                                 InputProps={{startAdornment: (<InputAdornment position="start">$</InputAdornment>)}}
                                 value={groceryPrice}
@@ -161,25 +217,22 @@ const FormDialog = () => {
                                     setGroceryDate(event.target.value)
                                 }}
                             />
-                            <TextField
-                                autoFocus
-                                margin="dense"
-                                label="Store Purchased From"
-                                fullWidth
-                                InputLabelProps={{shrink: true}}
-                                variant="standard"
-                                value={groceryStore}
-                                onChange={(event) => {
-                                    setGroceryStore(event.target.value)
-                                }}
-                            />
+                            <Autocomplete value={groceryStoreValue}
+                                          freeSolo
+                                          onChange={(event: any, newValue: string | null) => {return setGroceryStoreValue(newValue)}}
+                                          onInputChange={(event, newInputValue) => {
+                                              setGroceryStoreInputValue(newInputValue);
+                                          }}
+                                          options={groceryStoreOptions}
+                                          inputValue={groceryStoreInputValue}
+                                          renderInput={(params) => <StyledTextField type={'search'} variant={'standard'} label="Store" {...params}  InputLabelProps={{...params.InputLabelProps, shrink: true}}/>}/>
                         </Box>
                         <FormControlLabel control={<Checkbox checked={sale}
                                                              onChange={handleCheckboxChange}
                         />} label={'Sale'} labelPlacement="start"
                                           sx={{justifyContent: 'left', margin: 0, userSelect: 'none'}}/>
                         <Button variant='contained' sx={buttonStyling} onClick={handleAddItem}
-                                disabled={groceryName == '' || groceryPrice == '' || groceryDate == '' || groceryStore == '' && true}>Add
+                                disabled={groceryNameInputValue == '' || groceryPrice == '' || groceryDate == '' || groceryStoreInputValue == '' && true}>Add
                             Item</Button>
                     </DialogContent>
                     <DialogContent sx={dialogRight}>

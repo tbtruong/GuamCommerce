@@ -27,12 +27,6 @@ const Dashboard = () => {
         setGroceryPrices(groceryPriceList)
     }
 
-    React.useEffect(() => {
-        setTimeout(() => {
-            console.log("World!");
-        }, 1000);
-    }, [groceryPrices])
-
     const calculateAverages = () => {
         let currentNonsell = 0
         let currentCountNonsell = 0
@@ -48,8 +42,8 @@ const Dashboard = () => {
             }
         })
 
-        setPriceAverage(currentNonsell ? (Math.round((currentNonsell / currentCountNonsell) * 100) / 100).toString() : 'No current data')
-        setSaleAverage(currentSale ? (Math.round((currentSale / currentCountSell) * 100) / 100).toString() : 'No current data')
+        setPriceAverage(currentNonsell ? (Math.round((currentNonsell / currentCountNonsell) * 100) / 100).toFixed(2) : 'No current data')
+        setSaleAverage(currentSale ? (Math.round((currentSale / currentCountSell) * 100) / 100).toFixed(2) : 'No current data')
     }
 
     React.useEffect(() => {
@@ -75,10 +69,10 @@ const Dashboard = () => {
                             }}>
                                 <Box sx={{display: 'flex', justifyContent: 'space-around', marginBottom: '2rem'}}>
                                     <PriceCard
-                                        price={priceAverage == 'No current data' ? priceAverage : `${priceAverage}/pound`}
+                                        price={priceAverage == 'No current data' ? priceAverage : `$${priceAverage}/pound`}
                                         text={'Average Price:'}/>
                                     <PriceCard
-                                        price={saleAverage == 'No current data' ? saleAverage : `${saleAverage}/pound`}
+                                        price={saleAverage == 'No current data' ? saleAverage : `$${saleAverage}/pound`}
                                         text={'Avg Sale Price:'}/>
                                 </Box>
                                 <Table groceryPriceList={groceryPrices}/>

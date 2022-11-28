@@ -1,4 +1,4 @@
-import {TextField} from '@mui/material';
+import {Autocomplete, TextField} from '@mui/material';
 import * as React from 'react';
 import axios from 'axios';
 import {searchItemResults} from "../../Routes/Groceries";
@@ -14,16 +14,30 @@ const searchStyle = {
 
 const SearchComponent = ({searchItemCallback}: SearchComponentProps) => {
 
-    const [searchValue, setSearchValue] = React.useState('')
+    const [value, setValue] = React.useState<string | null>(null);
+    const [inputValue, setInputValue] = React.useState('');
+    const [options, setOptions] = React.useState<string[]>([])
+
+    React.useEffect( () => {
+        const tempArray: string[] = []
+        setTimeout(() => {
+            axios.get('/groceries/uniqueName').then((resp) => {
+                resp.data.map((item: searchItemResults) => {
+                    tempArray.push(item.name)
+                })
+                setOptions(tempArray)
+            })
+        }, 1000)
+    }, [])
 
     React.useEffect(() => {
         const delayDebounceFn = setTimeout(() => {
 
-            if (searchValue != '') {
+            if (inputValue != '') {
 
                 // Send Axios request here
                 axios.get("/groceries/getItem", {
-                    params: {item: searchValue}, headers: {
+                    params: {item: inputValue}, headers: {
                         jwt_token: localStorage.token
                     }
                 }).then(resp => {
@@ -34,11 +48,17 @@ const SearchComponent = ({searchItemCallback}: SearchComponentProps) => {
             }
         }, 1000)
         return () => clearTimeout(delayDebounceFn)
-    }, [searchValue])
+    }, [inputValue])
 
-    return (<TextField id="searchBox" label="Search field" type="search" value={searchValue} onChange={(event) => {
-        setSearchValue(event.target.value)
-    }} sx={searchStyle}/>)
+    // @ts-ignore
+    return (<Autocomplete id="searchBox" label="Search field" type="search" value={value}
+                          onChange={(event: any, newValue: string | null) => {return setValue(newValue)}}
+                          onInputChange={(event, newInputValue) => {
+                              setInputValue(newInputValue);
+                          }}
+                          options={options}
+                          inputValue={inputValue}
+          renderInput={(params) => <TextField {...params} />} sx={searchStyle}/>)
 }
 
 
