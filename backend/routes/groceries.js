@@ -48,7 +48,7 @@ router.post('/postGroceryList', authorize, async (req, res) => {
 })
 
 //Path for unique autocomplete
-router.get('/uniqueName', async (req, res) => {
+router.get('/uniqueName', authorize, async (req, res) => {
     try {
         const item = await client.query(
             "SELECT DISTINCT name FROM GROCERIES;");
@@ -59,7 +59,7 @@ router.get('/uniqueName', async (req, res) => {
     }
 })
 
-router.get('/uniqueStore', async (req, res) => {
+router.get('/uniqueStore', authorize, async (req, res) => {
     try {
         const item = await client.query(
             "SELECT DISTINCT store FROM GROCERIES;");
@@ -93,7 +93,7 @@ router.post('/deleteGrocery', authorize, async (req, res) => {
 })
 
 //Path for unique autocomplete
-router.get('/getAll', async (req, res) => {
+router.get('/getAll', authorize, async (req, res) => {
     try {
         const item = await client.query(
             "SELECT * FROM GROCERIES ORDER BY date_purchased ASC;");
