@@ -1,8 +1,8 @@
 import React, {FormEvent} from 'react';
-import {Button, FormControl, Grid, TextField} from "@mui/material";
+import {Button, FormControl, TextField} from "@mui/material";
 import axios from '../../Util/Axios'
 import {AxiosError} from "axios";
-import {Navigate, useNavigate} from "react-router-dom";
+import {useNavigate} from "react-router-dom";
 
 
 const LoginInput = () => {
@@ -29,7 +29,6 @@ const LoginInput = () => {
                     localStorage.setItem("token", parseRes.data.jwtToken);
                 }
                 if (localStorage.getItem("token")) {
-                    console.log("True")
                     navigate("/");
                 }
             })
@@ -42,17 +41,17 @@ const LoginInput = () => {
 
 
     return (
-                <FormControl  sx={{display: 'flex', flexDirection: 'row'}}>
-                    <form  onSubmit={handleSubmit} >
-                    <Button type={'submit'} disableFocusRipple disableRipple sx={{background: 'transparent !important'}}>
-                            <TextField  variant={'standard'} type={"password"} onFocus={onFocus} onBlur={onBlur}  fullWidth
-                                InputProps={ focused ? {sx: {width: '300px', fontSize: '50px'}, disableUnderline: true} :
-                                    {sx: {width: '300px', fontSize: '50px'}}}
-                                value={value}
-                                onChange={handleChange}/>
-                        </Button>
-                    </form>
-                </FormControl>
+        <FormControl sx={{display: 'flex', flexDirection: 'row'}}>
+            <form onSubmit={handleSubmit}>
+                <Button type={'submit'} disableFocusRipple disableRipple sx={{background: 'transparent !important'}}>
+                    <TextField variant={'standard'} type={"password"} onFocus={onFocus} onBlur={onBlur} fullWidth
+                               InputProps={focused ? {sx: {width: '300px', fontSize: '50px'}, disableUnderline: true} :
+                                   {sx: {width: '300px', fontSize: '50px'}}}
+                               value={value}
+                               onChange={handleChange}/>
+                </Button>
+            </form>
+        </FormControl>
     );
 }
 

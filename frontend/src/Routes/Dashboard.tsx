@@ -3,6 +3,7 @@ import Drawer from "../Components/Drawer/Drawer";
 import {Box, CssBaseline, Grid, Typography} from "@mui/material";
 import SearchBar from "../Components/SearchBar/SearchBar";
 import ReactCSSTransitionGroup from 'react-transition-group';
+import Dialog from "../Components/Dialog/Dialog";
 
 const Dashboard = () => {
   return (
@@ -14,6 +15,7 @@ const Dashboard = () => {
               <Grid item xs={112} gridRow={12}>
                 {/*<Box sx={{paddingLeft: '300px'}}>*/}
                 <SearchBar searchItemCallback={()=>console.log('hello')}/>
+                  <Dialog></Dialog>
               </Grid>
         </Grid>
       </Box>
