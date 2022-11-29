@@ -9,6 +9,7 @@ import DialogTitle from '@mui/material/DialogTitle';
 import DeleteIcon from '@mui/icons-material/Delete';
 import {
     Autocomplete,
+    Avatar,
     Box,
     Checkbox,
     FormControlLabel,
@@ -22,6 +23,7 @@ import axios from "../../Util/Axios";
 import {AxiosError} from "axios";
 import {searchItemResults} from "../../Routes/Groceries";
 import {styled} from "@mui/material/styles";
+import AddShoppingCartIcon from "@mui/icons-material/AddShoppingCart";
 
 const dialogLeft = {
     display: 'flex',
@@ -59,7 +61,12 @@ const StyledTextField = styled(TextField)`
 }
 `;
 
-const FormDialog = () => {
+interface FormDialogProps {
+    groceryCallback: (list: searchItemResults[]) => void
+}
+
+
+const FormDialog = ({groceryCallback}: FormDialogProps) => {
     const [open, setOpen] = React.useState(false);
 
     const [groceryNameValue, setGroceryNameValue] = React.useState<string | null>(null);
@@ -75,6 +82,7 @@ const FormDialog = () => {
     const [sale, setSale] = React.useState(false)
 
     const [groceries, setGroceries] = React.useState<groceryProduct[]>([])
+    const [forceRefresh, setForceRefresh] = React.useState(false)
 
     React.useEffect( () => {
         const tempNameArray: string[] = []
@@ -124,9 +132,7 @@ const FormDialog = () => {
                  headers: {
                     jwt_token: localStorage.token
                 }}).then((parseRes) => {
-                // if (parseRes.data.jwtToken) {
-                //     localStorage.setItem("token", parseRes.data.jwtToken);
-                // }
+                    groceryCallback(parseRes.data)
             })
         } catch (err: any | AxiosError) {
             console.log(err.message)
@@ -174,10 +180,10 @@ const FormDialog = () => {
 
     // @ts-ignore
     return (
-        <Box>
-            <Button variant="outlined" onClick={handleClickOpen}>
-                Open form dialog
-            </Button>
+        <Box >
+            <IconButton color="primary" aria-label="upload picture" component="label" onClick={handleClickOpen}>
+                <AddShoppingCartIcon sx={{transform: 'scale(5)', color: '#283553'}}/>
+            </IconButton>
             <Dialog open={open} onClose={handleClose}>
                 <DialogTitle sx={{backgroundColor: '#202E4B', color: 'white'}}>Record Your Grocery
                     Expenditures</DialogTitle>

@@ -2,6 +2,7 @@ import {Autocomplete, TextField} from '@mui/material';
 import * as React from 'react';
 import axios from 'axios';
 import {searchItemResults} from "../../Routes/Groceries";
+import {styled} from "@mui/material/styles";
 
 
 interface SearchComponentProps {
@@ -11,6 +12,16 @@ interface SearchComponentProps {
 const searchStyle = {
     width: "50%"
 }
+
+const StyledTextField = styled(TextField)`
+  input[type='number']::-webkit-inner-spin-button,
+  input[type='number']::-webkit-outer-spin-button {
+    display: none;
+  }
+  input[type="search"]::-webkit-search-cancel-button {
+  -webkit-appearance: none;
+}
+`;
 
 const SearchComponent = ({searchItemCallback}: SearchComponentProps) => {
 
@@ -58,7 +69,7 @@ const SearchComponent = ({searchItemCallback}: SearchComponentProps) => {
                           }}
                           options={options}
                           inputValue={inputValue}
-          renderInput={(params) => <TextField {...params} />} sx={searchStyle}/>)
+          renderInput={(params) => <StyledTextField type={'search'} variant={'standard'} label={'Grocery Name'} {...params} sx={searchStyle} InputLabelProps={{...params.InputLabelProps, shrink: true}}/>}/>)
 }
 
 

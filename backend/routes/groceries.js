@@ -26,7 +26,7 @@ router.get('/getItem', authorize, async (req, res) => {
 })
 
 //Path to post groceries
-router.post('/postGroceryList', authorize, (req, res) => {
+router.post('/postGroceryList', authorize, async (req, res) => {
     console.log('hello')
     try {
         const {groceryList} = req.body
@@ -34,9 +34,13 @@ router.post('/postGroceryList', authorize, (req, res) => {
         groceryList.map(async (item) => {
             await client.query(
                 "INSERT INTO GROCERIES(name, price, date_purchased, store, sale) " +
-                "VALUES($1, $2, $3, $4, $5);", [upperCaseString(item.groceryName), parseFloat(item.groceryPrice), item.groceryDate, item.groceryStore, item.sale]
+                "VALUES($1, $2, $3, $4, $5);", [upperCaseString(item.groceryName), parseFloat(item.groceryPrice), item.groceryDate, upperCaseString(item.groceryStore), item.sale]
             );
         })
+
+        const item = await client.query(
+            "SELECT * FROM GROCERIES ORDER BY date_purchased ASC;");
+        res.send(JSON.stringify(item.rows))
     } catch (err) {
         console.log(err.message)
         res.status(500).send("Server error")
@@ -68,7 +72,36 @@ router.get('/uniqueStore', async (req, res) => {
 
 
 //Path to delete groceries
+router.post('/deleteGrocery', authorize, async (req, res) => {
+    console.log('hello')
+    try {
+        const {name, date_purchased} = req.body
+        console.log(name)
+        console.log(date_purchased)
+        //DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+        await client.query(
+            "DELETE FROM GROCERIES WHERE name = $1 AND date_purchased = $2", [upperCaseString(name), date_purchased]
+        );
 
+        const item = await client.query(
+            "SELECT * FROM GROCERIES ORDER BY date_purchased ASC;");
+        res.send(JSON.stringify(item.rows))
+    } catch (err) {
+        console.log(err.message)
+        res.status(500).send("Server error")
+    }
+})
 
+//Path for unique autocomplete
+router.get('/getAll', async (req, res) => {
+    try {
+        const item = await client.query(
+            "SELECT * FROM GROCERIES ORDER BY date_purchased ASC;");
+        res.send(JSON.stringify(item.rows))
+    } catch (err) {
+        console.log(err.message)
+        res.status(500).send("Server error")
+    }
+})
 
 export default router
