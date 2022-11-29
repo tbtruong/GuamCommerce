@@ -32,7 +32,10 @@ const SearchComponent = ({searchItemCallback}: SearchComponentProps) => {
     React.useEffect( () => {
         const tempArray: string[] = []
         setTimeout(() => {
-            axios.get('/groceries/uniqueName').then((resp) => {
+            axios.get('/groceries/uniqueName', {
+                headers: {
+                    jwt_token: localStorage.token
+                }}).then((resp) => {
                 resp.data.map((item: searchItemResults) => {
                     tempArray.push(item.name)
                 })
