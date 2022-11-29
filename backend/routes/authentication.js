@@ -23,7 +23,7 @@ router.post("/login", async (req,res) => {
         return res.json({jwtToken});
     } catch (err) {
         console.error(err.message);
-        res.status(500).send("Server error");
+        res.status(500).send("Server error custom")
     }
 })
 

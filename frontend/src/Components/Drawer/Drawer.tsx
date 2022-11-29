@@ -18,7 +18,6 @@ const AppDrawer = () => {
             title: 'Groceries'
         },
         {
-            href: '/flights',
             icon: (<ConnectingAirports fontSize="medium"/>),
             title: 'Flights'
         },
