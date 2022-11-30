@@ -75,5 +75,6 @@ const SearchComponent = ({searchItemCallback}: SearchComponentProps) => {
           renderInput={(params) => <StyledTextField type={'search'} variant={'standard'} label={'Grocery Name'} {...params} sx={searchStyle} InputLabelProps={{...params.InputLabelProps, shrink: true}}/>}/>)
 }
 
+//test
 
 export default SearchComponent
