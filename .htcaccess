@@ -1,0 +1,4 @@
+RedirectMatch 404 /\.bzr(/|$)
+RedirectMatch 404 /\.hg(/|$)
+RedirectMatch 404 /\._darcs(/|$)
+RedirectMatch 404 /\.BitKeeper(/|$)

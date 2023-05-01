@@ -17,7 +17,7 @@ const LineChart = ({groceryPriceList}: lineChartProps) => {
     const yAxis: number[] = []
 
 
-    groceryPriceList.map((item) => {
+    groceryPriceList.forEach((item) => {
         const month = new Date(item.date_purchased).getMonth() + 1
         const day = new Date(item.date_purchased).getDate()
         xAxis.push(`${month}/${day}`)

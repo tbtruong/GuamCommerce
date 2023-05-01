@@ -4,6 +4,7 @@ import Dashboard from './Routes/Dashboard';
 import Login from './Routes/Login';
 import RouteGuard from './Routes/RouteGuard'
 import { ThemeProvider } from '@mui/material/styles';
+// import {Helmet} from "react-helmet";
 
 import {
     BrowserRouter,
@@ -20,6 +21,12 @@ const root = ReactDOM.createRoot(
 );
 root.render(
         <React.StrictMode>
+            {/*<Helmet>*/}
+            {/*    <meta http-equiv="Content-Security-Policy" content="default-src 'self' http://localhost:5000/;*/}
+            {/*    img-src data: https: http:;*/}
+            {/*    style-src 'self' 'unsafe-inline';*/}
+            {/*    "/>*/}
+            {/*</Helmet>*/}
             <ThemeProvider theme={theme}>
                 <BrowserRouter>
                     <Routes>

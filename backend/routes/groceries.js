@@ -12,9 +12,37 @@ const upperCaseString = (text) => {
         .join(' ');
 }
 
+// //Regex to verify username. Returns true if it matches the regex
+// const validateString = (string) => {
+//     const regex = /^[A-Za-z]*$/
+//     const conditional = regex.test(string.toLowerCase())
+//     return conditional
+// }
+//
+// const validateFloat = (float) => {
+//     const regex = /^[0-9.]*$/
+//     const conditional = regex.test(float)
+//     return conditional
+// }
+//
+// const validateDate = (date) => {
+//     const regex = /^[0-9/]*$/
+//     const conditional = regex.test(date)
+//     return conditional
+// }
+//
+// const validateBoolean = (boolean) => {
+//     return boolean == 'true' || boolean == 'false'
+// }
+
+
+
 //Path to get groceries
 router.get('/getItem', authorize, async (req, res) => {
     try {
+        // if(!validateString(req.query.item)) {
+        //     res.status(400).send("Input invalid")
+        // }
         const item = await client.query(
             "SELECT name, price, date_purchased, store, sale FROM GROCERIES WHERE name = $1 ORDER BY date_purchased ASC; ", [upperCaseString(req.query.item)]
         );
@@ -27,11 +55,12 @@ router.get('/getItem', authorize, async (req, res) => {
 
 //Path to post groceries
 router.post('/postGroceryList', authorize, async (req, res) => {
-    console.log('hello')
     try {
         const {groceryList} = req.body
-        console.log(groceryList)
         groceryList.map(async (item) => {
+            // if(!validateString(item.groceryName) || !validateFloat(item.groceryPrice) || !validateDate(item.groceryDate) || !validateString(item.groceryStore) || !validateBoolean()) {
+            //     res.status(400).send("Input invalid")
+            // }
             await client.query(
                 "INSERT INTO GROCERIES(name, price, date_purchased, store, sale) " +
                 "VALUES($1, $2, $3, $4, $5);", [upperCaseString(item.groceryName), parseFloat(item.groceryPrice), item.groceryDate, upperCaseString(item.groceryStore), item.sale]
@@ -43,6 +72,7 @@ router.post('/postGroceryList', authorize, async (req, res) => {
         res.send(JSON.stringify(item.rows))
     } catch (err) {
         console.log(err.message)
+        console.log('error')
         res.status(500).send("Server error")
     }
 })
@@ -73,12 +103,11 @@ router.get('/uniqueStore', authorize, async (req, res) => {
 
 //Path to delete groceries
 router.post('/deleteGrocery', authorize, async (req, res) => {
-    console.log('hello')
     try {
         const {name, date_purchased} = req.body
-        console.log(name)
-        console.log(date_purchased)
-        //DELETE FROM Customers WHERE CustomerName='Alfreds Futterkiste';
+        // if (!validateString(name) || !validateDate(date_purchased)) {
+        //     res.status(400).send("Input invalid")
+        // }
         await client.query(
             "DELETE FROM GROCERIES WHERE name = $1 AND date_purchased = $2", [upperCaseString(name), date_purchased]
         );
