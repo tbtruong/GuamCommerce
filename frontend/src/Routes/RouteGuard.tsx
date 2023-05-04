@@ -1,4 +1,4 @@
-import React from 'react';
+import React, {useEffect, useState} from 'react';
 import {Navigate} from 'react-router-dom';
 import axios from "axios"
 
@@ -17,6 +17,18 @@ const RouteGuard = ({children, redirectTo}: routeGuardComponentProps) => {
 
     return hasJWT() ? children : <Navigate to={redirectTo}/>
 
+    // const [flag, setFlag] = React.useState<undefined | boolean>(undefined)
+    //
+    // useEffect(() => {
+    //     const callBackend = async () => {
+    //         if (hasJWT()) {
+    //            const returnBoolean = await verifyJWT();
+    //            setFlag(returnBoolean);
+    //         }
+    //     }
+    //     callBackend()
+    // }, [])
+    //
     // async function verifyJWT() {
     //     let flag = false
     //     await axios.get('/authentication/validate', {
@@ -32,8 +44,10 @@ const RouteGuard = ({children, redirectTo}: routeGuardComponentProps) => {
     //     })
     //     return flag
     // }
-
-    // return hasJWT() && await verifyJWT() ? children : <Navigate to={redirectTo}/>
+    //
+    // if (flag !== undefined) {
+    //     return flag ? children : <Navigate to={redirectTo}/>
+    // }
 };
 
 export default RouteGuard;

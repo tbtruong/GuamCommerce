@@ -19,7 +19,7 @@ const __dirname = path.dirname(__filename);
 // Create the server
 const app = express()
 app.use(express.json())
-app.use(cors)
+app.use(cors())
 await client.connect()
 
 // Serve static files from the React frontend app
@@ -37,16 +37,14 @@ app.use(express.static(path.join(__dirname, '/../frontend/build')))
 //
 // app.use(cors(corsOptions));
 
-
-
-// // Set up rate limiter middleware
-// const limiter = rateLimit({
-//   windowMs: 15 * 60 * 1000, // 15 minutes
-//   max: 100 // limit each IP to 100 requests per windowMs
+// If there are more than 30 requests from an ip address within 15 minutes, lock them out
+// const blockBruteForce = rateLimit({
+//   windowMs: 15 * 60 * 1000,
+//   max: 30
 // });
 //
-// // Apply rate limiter middleware to all requests
-// app.use(limiter);
+// // Apply security middleware to all routes
+// app.use(blockBruteForce);
 //
 // app.use(function (req, res, next) {
 //   res.setHeader(
@@ -54,7 +52,7 @@ app.use(express.static(path.join(__dirname, '/../frontend/build')))
 //       "default-src 'self' http://localhost:5000/ http://localhost:3000/; img-src data: https: http:; frame-ancestors 'none'; style-src 'self' 'unsafe-inline';"
 //   );
 //   res.setHeader('X-Content-Type-Options', 'nosniff');
-//   res.setHeader(  'X-Frame-Options', 'deny')
+//   res.setHeader('X-Frame-Options', 'deny')
 //   next();
 // });
 
